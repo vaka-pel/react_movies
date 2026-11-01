@@ -1,0 +1,17 @@
+.search
+{
+	margin:45px;
+}
+	.search input
+	{
+	width:100%;
+	font-size:24px;
+	text-align:center;
+	border:0px;
+	color:#BBB;
+	}
+		.search input:focus
+		{
+	outline:none;
+	border-bottom:solid 1px gray;
+		}
