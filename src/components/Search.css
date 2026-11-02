@@ -15,3 +15,12 @@
 	outline:none;
 	border-bottom:solid 1px gray;
 		}
+		.search > button
+		{
+			background-color: white;
+			color:white;
+			width:50px;
+			height:32px;
+			font-size:24px;
+			border:none;
+		}
