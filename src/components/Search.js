@@ -3,19 +3,25 @@ import React from "react";
 
  class Search extends React.Component
 {
-	 state =
-		 {
+	state =
+	{
 			 search: "",
 			 type: "all",
-			 page: 1
-		 }
+			 page: 1,
+			 totalPages:1
+	}
+	 componentDidMount()
+	 {
+		 let itemsPerPage = 10;
+		 this.setState({ totalPages: Math.ceil(this.props.totalCount / itemsPerPage) });
+	 }
 	 handleKey = (event) =>
 	 {
 		//console.log(`Search.handleKey:\t${event.key}`);
 		 if (event.key === 'Enter')
 		 {
-			console.log(`Search.handleKey:\t${this.state.search}`);
-			this.props.searchMovie(this.state.search, this.state.type);
+			 this.props.searchMovie(this.state.search, this.state.type);
+			 this.setState({ page: 1 });
 		 }
 	 }
 	 handleFilter = (event) =>
@@ -23,7 +29,7 @@ import React from "react";
 		 this.setState
 			 (
 				 () => ({ type:		event.target.dataset.type }),
-				 () => ({ search:	this.props.searchMovie(this.state.search, this.state.type)})
+				 () => ({ search: this.props.searchMovie(this.state.search, this.state.type) })
 		 )
 	 }
 	 prevPage = () =>
@@ -42,11 +48,21 @@ import React from "react";
 				 () => { this.props.searchMovie(this.state.search, this.state.type, this.state.page)}
 		 )
 	 }
+	 setPage = (pageNumber) =>
+	 {
+		 this.setState
+		 (
+				 () => ({ page: pageNumber }),
+				 () => (this.props.searchMovie(this.state.search, this.state.type, this.state.page))
+
+		 )
+	 }
 
 	 render()
 	 {
 		 let itemsPerPage = 10;
 		 let totalPages = Math.ceil(this.props.totalCount / itemsPerPage);
+		 //this.setState({ totalPages: Math.ceil(this.props.totalCount / itemsPerPage) });
 		 let number = [];
 		 for (let i = 0; i < totalPages; i++)
 			 number.push(i+1);
@@ -62,7 +78,11 @@ import React from "react";
 					 <button className="btn"
 						 onClick=
 						 {
-							 () => this.props.searchMovie(this.state.search, this.state.type)
+							 () =>
+							 {
+								 this.props.searchMovie(this.state.search, this.state.type);
+								 this.setState({ page: 1 });
+							 }
 						 }
 						 >
 						&#128269;
@@ -115,7 +135,8 @@ import React from "react";
 								 (
 									 (element, index) =>
 									 (
-										 <button className={element === this.state.page ? "btn-current-page" : ""}>
+										 <button className={element === this.state.page ? "btn-current-page" : ""}
+											 onClick={ () => (this.setPage(element))}>
 											 { element }
 										 </button>
 									)
